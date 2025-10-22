@@ -26,7 +26,7 @@ public class UserDao {
         if (!validateExistence(username)) {
             try {
                 Connection conn = DatabaseConnection.connect();
-                String sqlQuery = "INSERT INTO `inmobiliaria`.`usuarios` (`nombre_usuario`, `contraseña`, `id_tipo_usuario`) VALUES (?, ?, '2');";
+                String sqlQuery = "INSERT INTO `RealEstate`.`Users` (`username`, `password`, `id_user_type`) VALUES (?, ?, '2');";
                 PreparedStatement statement = conn.prepareStatement(sqlQuery);
                 statement.setString(1, username);
                 statement.setString(2, password);
@@ -45,7 +45,7 @@ public class UserDao {
         ResultSet resultSet = null;
         try {
             conn = DatabaseConnection.connect();
-            String sqlQuery = "SELECT * FROM usuarios u WHERE u.nombre_usuario = ?";
+            String sqlQuery = "SELECT * FROM users u WHERE u.username = ?";
             statement = conn.prepareStatement(sqlQuery);
             statement.setString(1, username);
             resultSet = statement.executeQuery();
@@ -78,18 +78,18 @@ public class UserDao {
         Role role = null;
         try {
             conn = DatabaseConnection.connect();
-            String sqlQuery = "SELECT * FROM inmobiliaria.usuarios u WHERE u.nombre_usuario = ? AND u.contraseña = ?";
+            String sqlQuery = "SELECT * FROM RealState.users u WHERE u.username = ? AND u.password = ?";
             statement = conn.prepareStatement(sqlQuery);
             statement.setString(1, username);
             statement.setString(2, password);
             resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 currentUser = new User();
-                currentUser.setUsername(resultSet.getString("nombre_usuario"));
-                currentUser.setPassword(resultSet.getString("contraseña"));
-                if ("Administrador".equalsIgnoreCase(resultSet.getString("tipo_usuario"))) {
+                currentUser.setUsername(resultSet.getString("username"));
+                currentUser.setPassword(resultSet.getString("password"));
+                if ("Administrator".equalsIgnoreCase(resultSet.getString("user_type"))) {
                     currentUser.setRole(User.Role.ADMIN);
-                } else if ("Cliente".equalsIgnoreCase(resultSet.getString("tipo_usuario"))) {
+                } else if ("Client".equalsIgnoreCase(resultSet.getString("user_type"))) {
                     currentUser.setRole(User.Role.CLIENT);
                 }
 

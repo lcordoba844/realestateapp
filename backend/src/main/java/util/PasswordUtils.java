@@ -2,7 +2,7 @@ package util;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public class PasswordHashing {
+public class PasswordUtils {
 
     public static String hashPassword(String password) {
         try {

@@ -10,6 +10,14 @@ public class User {
         CLIENT
     }
 
+    public User(String username, String password, Role role) {
+        this.username = username;
+        this.password = password;
+        this.role = role;
+    }
+
+    public User() {}
+
     public String getUsername() {
         return username;
     }

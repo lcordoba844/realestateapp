@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import util.PasswordHashing;
+
 import util.UserAlreadyExistsException;
 import util.DatabaseConnection;
 import model.User;
@@ -12,12 +12,10 @@ import model.User.Role;
 
 public class UserDao {
 
-    public static void addNewUser(String username, String pass) throws IllegalArgumentException, UserAlreadyExistsException {
-        if (username == null || pass == null) {
+    public static void addNewUser(String username, String password) throws IllegalArgumentException, UserAlreadyExistsException {
+        if (username == null || password == null) {
             throw new IllegalArgumentException("El usuario o la contraseña son null");
         }
-
-        String password = PasswordHashing.hashPassword(pass);
 
         if (password == null) {
             throw new IllegalArgumentException("Error al hashear la contraseña");
@@ -70,7 +68,7 @@ public class UserDao {
         }
     }
 
-    public static User getUser(String username, String password) {
+    public static User getUser(String username) {
         User currentUser = null;
         Connection conn = null;
         PreparedStatement statement = null;
@@ -78,21 +76,23 @@ public class UserDao {
         Role role = null;
         try {
             conn = DatabaseConnection.connect();
-            String sqlQuery = "SELECT * FROM RealState.users u WHERE u.username = ? AND u.password = ?";
+            String sqlQuery = "SELECT * FROM RealEstate.users u WHERE u.username = ?";
             statement = conn.prepareStatement(sqlQuery);
             statement.setString(1, username);
-            statement.setString(2, password);
             resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                currentUser = new User();
-                currentUser.setUsername(resultSet.getString("username"));
-                currentUser.setPassword(resultSet.getString("password"));
-                if ("Administrator".equalsIgnoreCase(resultSet.getString("user_type"))) {
-                    currentUser.setRole(User.Role.ADMIN);
-                } else if ("Client".equalsIgnoreCase(resultSet.getString("user_type"))) {
-                    currentUser.setRole(User.Role.CLIENT);
+                User.Role currentUserRole = null;
+                int userType = resultSet.getInt("id_user_type");
+                if (userType == 1) {
+                    currentUserRole = User.Role.ADMIN;
+                } else if (userType == 2 ) {
+                    currentUserRole = User.Role.CLIENT;
                 }
-
+                currentUser = new User(
+                        resultSet.getString("username"),
+                        resultSet.getString("password"),
+                        currentUserRole
+                );
             }
         } catch (SQLException e) {
             e.printStackTrace();

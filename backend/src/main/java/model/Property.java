@@ -5,18 +5,30 @@ import java.util.List;
 public abstract class Property {
 
     private int propertyId;
-    private int numberOfBathrooms;
-    private int numberOfBedrooms;
     private String typeOfProperty;
-    private double price;
-    private boolean parking;
     private String description;
     private String address;
+    private String district;
     private City city;
-    private String condition;
+    private Province province;
+    private int numberOfBathrooms;
+    private int numberOfBedrooms;
+    private int numberOfRooms;
+    private int numberOfFloors;
+    private Double mts2constructed;
+    private Double mts2covered;
+    private Double mts2semiCovered;
+    private int propertyAge;
+    private String propertyCondition;
+    private String buildingCategory; // Could be an ENUM
+    private double price;
+    private boolean parking;
+    private ArrayList<Service> services;
     private String orientation;
     private List<Task> taskList;
-    private int ownerID;
+    private int ownerId;
+    private boolean frenteContrafrente;
+    private String imgSource;
 
     public int getPropertyId() {
         return propertyId;
@@ -114,11 +126,11 @@ public abstract class Property {
         this.taskList = taskList;
     }
 
-    public int getOwnerID() {
-        return ownerID;
+    public int getOwnerId() {
+        return ownerId;
     }
 
-    public void setOwnerID(int ownerID) {
-        this.ownerID = ownerID;
+    public void setOwnerId(int ownerId) {
+        this.ownerId = ownerId;
     }
 }

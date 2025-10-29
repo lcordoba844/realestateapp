@@ -1,15 +1,16 @@
 package model;
 
 public class City {
-    private int cityID;
+    private int cityId;
     private String cityName;
+    private int provinceID;
 
-    public int getCityID() {
-        return cityID;
+    public int getCityId() {
+        return cityId;
     }
 
-    public void setCityID(int cityID) {
-        this.cityID = cityID;
+    public void setCityId(int cityId) {
+        this.cityId = cityId;
     }
 
     public String getCityName() {

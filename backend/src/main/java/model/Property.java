@@ -3,7 +3,7 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class Property {
+public class Property {
     public static enum Disposition {
         FRONT,
         BACK
@@ -33,6 +33,8 @@ public abstract class Property {
     private int ownerId;
     private Disposition disposition;
     private String imgSource;
+
+    public Property() {}
 
     public int getPropertyId() {
         return propertyId;

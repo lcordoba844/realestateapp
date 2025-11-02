@@ -1,20 +1,25 @@
 package filters;
 
-import jakarta.servlet.*;
-import jakarta.servlet.http.*;
+import jakarta.servlet.Filter;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.FilterConfig;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
+import jakarta.servlet.annotation.WebFilter;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 
+@WebFilter("/*")
 public class AuthFilter implements Filter {
 
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
+    public void doFilter(ServletRequest sRequest, ServletResponse sResponse, FilterChain chain)
+            throws IOException, ServletException {
 
-    }
-
-    @Override
-    public void doFilter(ServletRequest sRequest, ServletResponse sResponse, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) sRequest;
         HttpServletResponse response = (HttpServletResponse) sResponse;
 
@@ -24,15 +29,15 @@ public class AuthFilter implements Filter {
         String uri = request.getRequestURI();
         String contextPath = request.getContextPath();
 
-        boolean isLoginPage = uri.equals(contextPath + "/login.jsp");
-        boolean isLoginServlet = uri.equals(contextPath + "/LoginServlet");
-        boolean isCssOrJs = uri.startsWith(contextPath + "/assets/");
+        // Allow login pages, login servlet, static assets
+        boolean isLoginPage = uri.endsWith("login.jsp");
+        boolean isLoginServlet = uri.endsWith("/Login");
+        boolean isAssets = uri.startsWith(contextPath + "/assets/");
 
-        if (loggedIn || isLoginPage || isLoginServlet || isCssOrJs) {
-            chain.doFilter(request, response);
+        if (loggedIn || isLoginPage || isLoginServlet || isAssets) {
+            chain.doFilter(request, response); // pass through
         } else {
-            response.sendRedirect(contextPath + "/login.jsp");
+            response.sendRedirect(contextPath + "/login.jsp"); // not logged in
         }
     }
-
 }

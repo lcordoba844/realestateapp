@@ -10,6 +10,6 @@ public class SessionUtils {
 
     public static boolean checkSession(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
-        return (session != null && session.getAttribute("current_user") != null);
+        return (session != null && session.getAttribute("currentUser") != null);
     }
 }

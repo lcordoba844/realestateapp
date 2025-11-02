@@ -28,8 +28,8 @@ public class LoginServlet extends HttpServlet {
             User currentUser = UserDao.getUser(username);
             if (currentUser != null && PasswordUtils.verifyPassword(passwordAttempt, currentUser.getPassword())) {
                 HttpSession session = request.getSession(true);
-                session.setAttribute("current_user", currentUser);
-                request.getRequestDispatcher("views/secure/dashboard.jsp").forward(request, response);
+                session.setAttribute("currentUser", currentUser);
+                request.getRequestDispatcher("/views/secure/dashboard.jsp").forward(request, response);
             } else {
                 request.setAttribute("errorMessage", "Usuario o contraseña incorrectos.");
                 request.getRequestDispatcher("login.jsp").forward(request, response);

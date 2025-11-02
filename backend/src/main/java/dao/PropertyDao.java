@@ -13,8 +13,8 @@ import java.util.ArrayList;
 public class PropertyDao {
 
     public static boolean addNewProperty(Property property) throws SQLException {
-        String sqlQuery = "INSERT INTO properties (type_of_property, description, address, district, city_id, number_of_bathrooms, number_of_bedrooms, number_of_rooms, " +
-                "number_of_floors, mts2constructed, mts2covered, mts2semicovered, property_age, property_condition, building_category, price, parking, orientation, owner_id, disposition) " +
+        String sqlQuery = "INSERT INTO properties (type_of_property, description, address, district, id_city, number_of_bathrooms, number_of_bedrooms, number_of_rooms, " +
+                "number_of_floors, mts2constructed, mts2covered, mts2semicovered, property_age, property_condition, building_category, price, parking, orientation, id_owner, disposition) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = DatabaseConnection.connect();
@@ -101,13 +101,13 @@ public class PropertyDao {
 
             while (resultSet.next()) {
                 Property property = new Property();
-                property.setPropertyId(resultSet.getInt("property_id"));
+                property.setPropertyId(resultSet.getInt("id_property"));
                 property.setTypeOfProperty(resultSet.getString("type_of_property"));
                 property.setDescription(resultSet.getString("description"));
                 property.setAddress(resultSet.getString("address"));
                 property.setDistrict(resultSet.getString("district"));
 
-                int cityId = resultSet.getInt("city_id");
+                int cityId = resultSet.getInt("id_city");
                 City city = CityDao.getCityById(cityId);
                 property.setCity(city);
 
@@ -124,7 +124,7 @@ public class PropertyDao {
                 property.setPrice(resultSet.getDouble("price"));
                 property.setParking(resultSet.getBoolean("parking"));
                 property.setOrientation(resultSet.getString("orientation"));
-                property.setOwnerId(resultSet.getInt("owner_id"));
+                property.setOwnerId(resultSet.getInt("id_owner"));
                 property.setDisposition(Property.Disposition.valueOf(resultSet.getString("disposition")));
 
                 listProperties.add(property);

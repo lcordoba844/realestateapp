@@ -25,16 +25,16 @@ public class CityDao {
     }
 
     public static City getCityById(int idCity) {
-        String sqlQuery = "SELECT * FROM cities WHERE city_id = ?";
+        String sqlQuery = "SELECT * FROM cities WHERE id_city = ?";
         try (Connection conn = DatabaseConnection.connect();
              PreparedStatement statement = conn.prepareStatement(sqlQuery)) {
             statement.setInt(1, idCity);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 City currentCity = new City();
-                currentCity.setCityId(resultSet.getInt("city_id"));
+                currentCity.setCityId(resultSet.getInt("id_city"));
                 currentCity.setCityName(resultSet.getString("description"));
-                currentCity.setProvinceId(resultSet.getInt("province_id"));
+                currentCity.setProvinceId(resultSet.getInt("id_province"));
                 return currentCity;
             }
         } catch (SQLException e) {
@@ -51,9 +51,9 @@ public class CityDao {
              ResultSet resultSet = statement.executeQuery();) {
            while (resultSet.next()) {
                City currentCity = new City();
-               currentCity.setCityId(resultSet.getInt("city_id"));
+               currentCity.setCityId(resultSet.getInt("id_city"));
                currentCity.setCityName(resultSet.getString("description"));
-               currentCity.setProvinceId(resultSet.getInt("province_id"));
+               currentCity.setProvinceId(resultSet.getInt("id_province"));
                listCities.add(currentCity);
             }
         } catch (SQLException e) {

@@ -3,7 +3,7 @@
          pageEncoding="UTF-8"%>
 
 <%
-    User currentUser = (User) session.getAttribute("current_user");
+    User currentUser = (User) session.getAttribute("currentUser");
 %>
 <!DOCTYPE html>
 <html>
@@ -17,5 +17,17 @@
     <body>
         <h1>Bienvenido <%= currentUser.getUsername() %> :D </h1>
         <h2>Tu usuario es de tipo <%= currentUser.getRole()%></h2>
+        <div class="flex">
+            <form action="${pageContext.request.contextPath}/property" method="get">
+                <input type="hidden" name="action" value="list">
+                <input type="submit" value="List All Properties">
+            </form>
+
+            <form action="${pageContext.request.contextPath}/property" method="get">
+                <input type="hidden" name="action" value="create">
+                <input type="submit" value="Add New Property">
+            </form>
+        </div>
+
     </body>
 </html>
